@@ -1,0 +1,77 @@
+<!-- navbar-->
+<nav class="navbar navbar-light navbar-expand-lg shadow-sm bg-white">
+    <div class="container">
+        <a href="index.html" class="navbar-brand">Book Advisor</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <div class="col-auto pl-0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-user"></i></div>
+                        </div>
+                        <input type="email" class="form-control" id="login-Email"
+                               autocomplete="email"
+                               aria-describedby="emailHelp" placeholder=" Email Address">
+                    </div>
+                </div>
+                <div class="col-auto pl-0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-lock"></i></div>
+                        </div>
+                        <input type="password" class="form-control" autocomplete="password" id="login-Password"
+                               placeholder="Password">
+                    </div>
+                </div>
+                <div class="col-auto pl-0 pr-0">
+                    <button class="btn btn-primary my-2 my-sm-0" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- Hero Section-->
+<section class="bg-light book">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 order-2 order-lg-1 ml-5">
+                <blockquote class="quote">
+                    The books that the world calls immoral are books that show the world its own shame.
+                    <span class="author"><i>Oscar Wilde</i></span>
+                </blockquote>
+            </div>
+            <div id="login-dp" class="col-lg-4 order-1 order-lg-2 offset-md-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" role="form" method="post" action="login" accept-charset="UTF-8"
+                              id="login-nav">
+                            <div class="form-group">
+                                <label class="sr-only" for="signup-Username">Email address</label>
+                                <input type="name" class="form-control" id="signup-Username" placeholder="Username"
+                                       autocomplete="none"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="signup-Email">Email address</label>
+                                <input type="email" class="form-control" id="signup-Email"
+                                       autocomplete="none"
+                                       placeholder="Email address" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="signup-Password">Password</label>
+                                <input type="password" class="form-control" id="signup-Password"
+                                       autocomplete="none"
+                                       placeholder="Password" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block">Sign up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

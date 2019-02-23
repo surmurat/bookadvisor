@@ -1,0 +1,201 @@
+{{> adminnavbar}}
+<div class="container-fluid" id="AddBooksContainer">
+    <div class="row mt-3">
+        <div class="col">
+            <div id="smartwizard">
+                <ul>
+                    <li><a href="#step-1">Choose Categories<br />
+                        <small>Choose the book categories</small>
+                    </a></li>
+                    <li><a href="#step-2">Choose Books<br />
+                        <small>Choose the books</small>
+                    </a></li>
+                    <li><a href="#step-3">Save<br />
+                        <small>Save them to database</small>
+                    </a></li>
+                </ul>
+
+                <div>
+                    <div id="step-1" class="">
+                        <div class="mt-3 mb-3">
+                            <select id="selectedCategories" multiple="multiple" name="selectedCategories" size="10">
+                            </select>
+                        </div>
+                    </div>
+                    <div id="step-2" class="clearfix">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col mt-2">
+                                    <button type="button" class="btn btn-outline-dark float-right" id="selectAllBooks">
+                                        Select All
+                                    </button>
+                                    <button type="button" class="btn btn-outline-dark float-right" id="selectNoneBooks">
+                                        Select None
+                                    </button>
+                                </div>
+                            </div>
+                            <ul id="RetrivedBooks" class="row mt-2 mb-2 p-0">
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="step-3" class="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+
+    </div>
+</div>
+
+{{#section "heads"}}
+    <link rel="stylesheet" href="/stylesheets/bootstrap-duallistbox.css" />
+    <link rel="stylesheet" href="/stylesheets/smart_wizard.css" />
+    <link rel="stylesheet" href="/stylesheets/smart_wizard_theme_arrows.css" />
+{{/section}}
+
+{{#section "scripts"}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"
+            integrity="sha384-Ct2s0NBxEbvJlnXHOZJheqOGKjX3Q4ewsYoJZYnLz/teMXnlGhim5o9305EkvlsN"
+            crossorigin="anonymous"></script>
+    <script src="/javascripts/jquery.bootstrap-duallistbox.js"></script>
+    <script src="/javascripts/jquery.smartWizard.js"></script>
+    <script type="text/html" data-name="bookTemplate">
+        <li id="%isbn%" class="card col-2 m-1 pl-0 pr-0">
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img class="img-fluid" src="%BookImage%" alt="%BookName%" width="85" height="130" />
+                </div>
+                <div class="col">
+                    <div class="card-block px-2">
+                        <h5>%BookName%</h5>
+                        <p class="card-text">%BookAuthor%</p>
+                        <div class="custom-control custom-checkbox" style="position:absolute; top:5px; right:5px;">
+                            <input type="checkbox" class="custom-control-input" id="%id%" name="%id%">
+                            <label class="custom-control-label" for="%id%"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script>
+        $(document).ajaxStart(() => {
+            $('body').showLoadingScreen();
+        }).ajaxStop(() => {
+            $('body').hideLoadingScreen();
+        });
+        $(document).ready(() => {
+            $('#selectAllBooks').on('click', ev => {
+                let checkboxes = $('#RetrivedBooks').find('input[type=checkbox]');
+                $.each(checkboxes, (index, elem) => {
+                    $(elem).prop('checked', true);
+                });
+            });
+            $('#selectNoneBooks').on('click', ev => {
+                let checkboxes = $('#RetrivedBooks').find('input[type=checkbox]');
+                $.each(checkboxes, (index, elem) => {
+                    $(elem).prop('checked', false);
+                });
+            });
+            $('#smartwizard').smartWizard({
+                theme: 'arrows',
+                transitionEffect: 'fade',
+                showStepURLhash: false,
+                toolbarSettings: {
+                    showPreviousButton: false
+                },
+                anchorSettings: {
+                    anchorClickable: false
+                }
+            });
+            let canProceed = false;
+            $('#smartwizard').on('leaveStep', (e, anchorObject, stepNumber, stepDirection) => {
+                let selectedCategories = $('select[name="selectedCategories_helper2"]').children('option');
+                if (stepDirection === 'forward' && stepNumber === 0 && selectedCategories.length === 0) {
+                    showError('You cannot continue before selecting at least one category.');
+                    return false;
+                } else if (stepDirection === 'forward' && stepNumber === 0 && selectedCategories.length > 0) {
+                    if (!canProceed) {
+                        let names = [];
+                        $.each(selectedCategories, (index, elem) => {
+                            names.push($(elem).attr('value'));
+                        });
+                        $.ajax({
+                            method: 'GET',
+                            url: '/api/getBooks/' + JSON.stringify(names)
+                        }).done(books => {
+                            let template = document.querySelector('script[data-name="bookTemplate"]').innerHTML.toString();
+                            for (let i = 0; i < books.length; i++) {
+                                let book = books[i];
+                                let bookTemplate = template
+                                        .split('%BookName%').join(titleCase(book.title))
+                                        .split('%BookAuthor%').join(book.author)
+                                        .split('%BookImage%').join(book.imageLink + '&zoom=5')
+                                        .split('%id%').join(book._id)
+                                        .split('%isbn%').join(book.isbn13);
+                                let item = $(bookTemplate);
+                                $('#RetrivedBooks').append(item);
+                            }
+                            canProceed = true;
+                            $('#smartwizard').smartWizard('next');
+                        }).fail(function (jqXHR) {
+                            if (jqXHR.status === 416) {
+                                showError('There was no new books in the selected categories.');
+                            } else {
+                                showError('There was a problem while sending categories to server.');
+                            }
+                        });
+                        return false;
+                    }
+                } else if (stepDirection === 'forward' && stepNumber === 1) {
+                    let selectedBooks = $('#RetrivedBooks').find(':checkbox:checked').map(function() {
+                        return this.id;
+                    }).get();
+                    console.log(selectedBooks);
+                    if (selectedBooks.length === 0) {
+                        showError('You have to select books to continue');
+                        return false;
+                    }
+                    $.ajax({
+                        method: 'POST',
+                        url: '/api/saveBooks/' + JSON.stringify(selectedBooks)
+                    }).done(stats => {
+                       swal({
+                           title: 'Success',
+                           icon: 'success',
+                           message: 'You added ' + stats.bookCount + ' and now you have total of ' + stats.totalBookCount + ' books in your database. Keep it growing. You will be redirected to Dashboard.'
+                       }).then(()=> {
+                           window.location.replace('/users/');
+                       });
+                    }).fail(() => {
+                        showError('There was a error while saving books to system.');
+                        return false;
+                    });
+                }
+            });
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: '/api/getCategories'
+            }).done(response => {
+                $.each(response.results, (index, element) => {
+                    let option = $('<option></option>').attr('value', element.list_name_encoded).text(element.display_name);
+                    $('#selectedCategories').append(option);
+                });
+                $('select[name="selectedCategories"]').bootstrapDualListbox({
+                    nonSelectedListLabel: 'Book Categories',
+                    selectedListLabel: 'Selected Categories',
+                    preserveSelectionOnMove: 'moved',
+                    moveOnSelect: false,
+                    showFilterInputs: false,
+                    infoText: ''
+                });
+            }).fail((jqXHR, textStatus) => {
+                showError(jqXHR);
+            });
+        });
+    </script>
+{{/section}}

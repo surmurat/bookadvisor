@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run-script start:dev",
+    "start": "npm run-script start:prod",
+    "test": "npm run-script start:dev",
     "start:dev": "nodemon --config nodemon.json node ./bin/www",
     "start:prod": "cross-env NODE_ENV=production node ./bin/www"
   },

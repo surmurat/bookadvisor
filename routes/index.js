@@ -4,21 +4,26 @@ const {Users} = require('../models');
 const router = express.Router();
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Book Advisor', user: req.user});
+router.get('/', function (req, res) {
+    if (req.isAuthenticated()) {
+        res.redirect('/users/');
+    } else {
+        res.render('index', {title: 'Book Advisor', user: null});
+    }
 });
-
+/*
 router.get('/signup', (req, res) => {
     res.render('signup', {});
 });
-
+*/
+/*
 router.get('/login', (req, res) => {
     res.render('login', { user : req.user, error : req.flash('error')});
 });
-
+*/
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/', // redirect to the secure profile section
-    failureRedirect: '/login', // redirect back to the signup page if there is an error
+    failureRedirect: '/', // redirect back to the signup page if there is an error
     failureFlash: true // allow flash messages
 }), (req, res, next) => {
     req.session.save((err) => {
@@ -30,18 +35,13 @@ router.post('/login', passport.authenticate('local', {
 });
 
 router.post('/signup', (req, res, next) => {
-    Users.register(new Users({username: req.body.username}), req.body.password, (err, user) => {
+    const {susername, semail, spassword} = req.body;
+    Users.register(new Users({username: susername, email: semail}), spassword, (err, user) => {
         if (err) {
-            return res.render('signup', {error: err.message});
+            console.log(err);
+            return res.render('index', {error: err.message});
         }
-        passport.authenticate('local')(req, res, () => {
-            req.session.save((err) => {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect('/');
-            });
-        });
+        res.redirect('/');
     });
 });
 

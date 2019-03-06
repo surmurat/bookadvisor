@@ -7,12 +7,15 @@ const passport = require('passport');
 const session = require('express-session');
 const helmet = require('helmet');
 const hbs = require('hbs');
+const flash = require('connect-flash');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const apiRouter = require('./routes/api');
 
 const app = express();
+
+require('./config/passport')(passport);
 
 app.use(helmet());
 
@@ -30,6 +33,7 @@ app.use(session({
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+app.use(flash());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

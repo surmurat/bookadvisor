@@ -30,7 +30,7 @@ const server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, function () {
+server.listen(port, function () {/*
   if (!isProduction) {
     require('browser-sync')({
       files: ['../'],
@@ -43,7 +43,7 @@ server.listen(port, function () {
       },
       reloadOnRestart: true
     });
-  }
+  }*/
 });
 server.on('error', onError);
 server.on('listening', onListening);

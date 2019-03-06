@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <div class="row shadow-lg p-5">
+        <div class="col-2 shadow-lg p-4">
+            <img src="/images/mrtb.jpg" class="rounded-circle" alt="murat">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="/users/" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true">Home</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="/users/profile" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="/users/messages" role="tab"
+                   aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="/users/penpals" role="tab"
+                   aria-controls="v-pills-settings" aria-selected="false">Pen Pals</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="/users/comments" role="tab"
+                   aria-controls="v-pills-settings" aria-selected="false">Comments</a>
+                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="/users/shelf" role="tab"
+                   aria-controls="v-pills-settings" aria-selected="false">Shelf</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="jumbotron jumbotron-fluid shadow-lg">
+                <div class="container">
+                    <h1 class="display-5">Fluid jumbotron</h1>
+                    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its
+                        parent.</p>
+                </div>
+            </div>
+            <div class="jumbotron jumbotron-fluid shadow-lg">
+                <div class="container">
+                    <div class="wrapper">
+                        <div class="owl-carousel owl-theme">
+                            {{#each books}}
+                                <div class="item"><a href="./book/{{this.isbn13}}"><img src="{{this.imageLink}}&zoom=5" alt="{{this.title}}"></a></div>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-group">
+                <div class="card m-5 rounded shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card .</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card m-5 rounded shadow-lg">
+                    <img src="" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This card </p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="card m-5 rounded shadow-lg">
+                    <img src="" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card </p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{> footer}}
+
+{{#section "heads"}}
+    <link rel="stylesheet" href="/stylesheets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/stylesheets/owl.theme.default.min.css">
+    <style type="text/css">
+        .wrapper {
+            width: 100;
+            height: auto;
+            overflow: hidden;
+        }
+
+        .item {
+            width: 200px;
+            height: 300px;
+        }
+    </style>
+{{/section}}
+
+{{#section "scripts"}}
+    <script src="/javascripts/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $('.owl-carousel').owlCarousel({
+                loop:true,
+                margin:10,
+                nav:true,
+                autoplay:true,
+                responsive:{
+                    0:{
+                        items:1
+                    },
+                    600:{
+                        items:3
+                    },
+                    1000:{
+                        items:5
+                    }
+                }
+            });
+        });
+    </script>
+{{/section}}

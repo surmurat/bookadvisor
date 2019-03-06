@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="jumbotron mt-5">
+                <div class="container">
+                    <div class="row ">
+                        <div class="col-sm border-right">
+                            <img src="{{book.imageLink}}&zoom=2" alt="{{book.title}}"> </div>
+                        <div class="col-sm">
+                            <p class="display-4">{{book.title}}</p>
+                            <p>by {{book.author}}</p>
+                            <p>Published by {{book.publisher}}</p>
+                            <p>{{book.pageCount}} page(s)</p>
+                            <p>{{book.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> footer}}

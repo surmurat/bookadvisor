@@ -5,15 +5,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <form class="form-inline my-2 my-lg-0" method="post" action="/login">
                 <div class="col-auto pl-0">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fa fa-user"></i></div>
                         </div>
-                        <input type="email" class="form-control" id="login-Email"
-                               autocomplete="email"
-                               aria-describedby="emailHelp" placeholder=" Email Address">
+                        <input type="text" class="form-control" id="username"
+                               autocomplete="username" name="username"
+                               aria-describedby="usernameHelp" placeholder=" Username">
                     </div>
                 </div>
                 <div class="col-auto pl-0">
@@ -21,8 +21,8 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text"><i class="fa fa-lock"></i></div>
                         </div>
-                        <input type="password" class="form-control" autocomplete="password" id="login-Password"
-                               placeholder="Password">
+                        <input type="password" class="form-control" autocomplete="password" id="password" name="password"
+                               placeholder=" Password">
                     </div>
                 </div>
                 <div class="col-auto pl-0 pr-0">
@@ -45,24 +45,23 @@
             <div id="login-dp" class="col-lg-4 order-1 order-lg-2 offset-md-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <form class="form" role="form" method="post" action="login" accept-charset="UTF-8"
-                              id="login-nav">
+                        <form class="form" role="form" method="post" action="./signup" id="login-nav">
                             <div class="form-group">
-                                <label class="sr-only" for="signup-Username">Email address</label>
-                                <input type="name" class="form-control" id="signup-Username" placeholder="Username"
-                                       autocomplete="none"
+                                <label class="sr-only" for="susername">Username</label>
+                                <input type="name" class="form-control" id="susername" name="susername" placeholder="Username"
+                                       autocomplete="username"
                                        required>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="signup-Email">Email address</label>
-                                <input type="email" class="form-control" id="signup-Email"
-                                       autocomplete="none"
+                                <label class="sr-only" for="semail">Email address</label>
+                                <input type="email" class="form-control" id="semail" name="semail"
+                                       autocomplete="email"
                                        placeholder="Email address" required>
                             </div>
                             <div class="form-group">
-                                <label class="sr-only" for="signup-Password">Password</label>
-                                <input type="password" class="form-control" id="signup-Password"
-                                       autocomplete="none"
+                                <label class="sr-only" for="spassword">Password</label>
+                                <input type="password" class="form-control" id="spassword" name="spassword"
+                                       autocomplete="password"
                                        placeholder="Password" required>
                             </div>
                             <div class="form-group">

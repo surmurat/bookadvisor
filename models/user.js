@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     comments: [{type:Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
-UserSchema.plugin(timestamps);
 UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(timestamps);
 
 module.exports = mongoose.model("User", UserSchema);
